@@ -42,10 +42,18 @@ router.get("/", restricted, (req, res, next) => { // done for you
  */
 router.get("/:user_id", restricted, only('admin'), (req, res, next) => { // done for you
   Users.findById(req.params.user_id)
-    .then(user => {
+    .then(([user]) => {
       res.json(user);
     })
     .catch(next);
 });
+
+router.use((err, req, res, next) => {
+  res.status(500).json({
+    message: err.message,
+    stack: err.stack,
+    custom: 'Error in users-router.js',
+  })
+})
 
 module.exports = router;

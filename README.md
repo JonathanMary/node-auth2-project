@@ -20,10 +20,10 @@ There are two possible ways to submit your project. Your instructor should have 
 
 #### Option B - Pull Request
 
-- [ ] Fork and clone the repository.
-- [ ] Implement your project in a `firstname-lastname` branch.
-- [ ] Create a pull request of `firstname-lastname` against your `main` branch.
-- [ ] Open the assignment in Canvas and submit your pull request.
+- [x] Fork and clone the repository.
+- [x] Implement your project in a `firstname-lastname` branch.
+- [x] Create a pull request of `firstname-lastname` against your `main` branch.
+- [x] Open the assignment in Canvas and submit your pull request.
 
 ### Task 2: Minimum Viable Product
 
@@ -33,18 +33,18 @@ You will complete the following tasks and do any extra wiring and package instal
 
 Write the following user access functions inside `api/users/users-model.js`:
 
-- [ ] `find`
+- [x] `find`
 - [ ] `findBy`
-- [ ] `findById`
+- [x] `findById`
 
 #### 2B - Middleware Functions
 
 Write the following auth middlewares inside `api/auth/auth-middleware.js`:
 
-- [ ] `restricted`
+- [x] `restricted`
 - [ ] `only`
-- [ ] `checkUsernameExists`
-- [ ] `validateRoleName`
+- [x] `checkUsernameExists`
+- [x] `validateRoleName`
 
 #### 2C - Endpoints
 
@@ -52,8 +52,8 @@ Authentication will be implemented using JSON Web Tokens.
 
 Write the following endpoints inside `api/auth/auth-router.js`:
 
-- [ ] `[POST] /api/auth/register`
-- [ ] `[POST] /api/auth/login`
+- [x] `[POST] /api/auth/register`
+- [x] `[POST] /api/auth/login`
 
 The endpoints inside `api/users/users-router.js` are built already but check them out:
 

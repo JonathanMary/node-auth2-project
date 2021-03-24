@@ -1,4 +1,6 @@
-const { JWT_SECRET } = require("../secrets"); // use this secret!
+const { jwtSecret } = require("../secrets") // use this secret!
+const jwt = require("jsonwebtoken")
+const Users = require("../users/users-model")
 
 const restricted = (req, res, next) => {
   /*
@@ -16,6 +18,19 @@ const restricted = (req, res, next) => {
 
     Put the decoded token in the req object, to make life easier for middlewares downstream!
   */
+  const token = req.headers.authorization
+  if (!token) {
+    res.status(401).json({ message: "Token required" })
+  } else {
+    jwt.verify(token, jwtSecret, (err, decoded) => {
+      if (err) {
+        res.status(401).json({ message: "Token invalid" })
+      } else {
+        req.decodedJwt = decoded
+        next()
+      }
+    })
+  }
 }
 
 const only = role_name => (req, res, next) => {
@@ -29,6 +44,12 @@ const only = role_name => (req, res, next) => {
 
     Pull the decoded token from the req object, to avoid verifying it again!
   */
+ const token = req.decodedJwt
+ if (token.role_name === role_name) {
+   next()
+ } else {
+   res.status(403).json({ message: "This is not for you" })
+ }
 }
 
 
@@ -40,6 +61,15 @@ const checkUsernameExists = (req, res, next) => {
       "message": "Invalid credentials"
     }
   */
+  Users.findBy({ username: req.body.username })
+       .then(user => {
+         if (user.length > 0) {
+           next()
+         } else {
+           res.status(401).json({ message: "Invalid credentials" })
+         }
+       })
+       .catch(next)
 }
 
 
@@ -62,6 +92,21 @@ const validateRoleName = (req, res, next) => {
       "message": "Role name can not be longer than 32 chars"
     }
   */
+  const body = req.body.role_name
+  if (!body || body.trim() === "") {
+    req.body.role_name = "student"
+    next()
+  } else {
+    const trimBody = body.trim()
+    if (trimBody === "admin") {
+      res.status(422).json({ message: "Role name can not be admin" })
+    } else if (trimBody.length > 32) {
+      res.status(422).json({ message: "Role name can not be longer than 32 chars" })
+    } else {
+      req.role_name = trimBody
+      next()
+    }
+  }
 }
 
 module.exports = {
