@@ -42,7 +42,7 @@ function findBy(filter) {
     .select('user_id', 'username', 'password', 'role_name')
     .from('users')
     .join('roles', 'users.role_id', 'roles.role_id')
-    .where('?') // FINISH HERE, HAVE TO FIND INPUT TYPE!
+    .where(`${Object.keys(filter)}`, Object.values(filter)) // FINISH HERE, HAVE TO FIND INPUT TYPE!
 }
 
 function findById(user_id) {
